@@ -3,8 +3,8 @@ from validadores import (
     checa_conjunto_contem,
     checa_eh_subconjunto,
 )
-from dataclasses import dataclass
-from typing import Set, TypeAlias
+from dataclasses import dataclass, field
+from typing import Set, TypeAlias, List, Optional, cast
 from enum import Enum
 
 Estado: TypeAlias = Enum
@@ -25,18 +25,23 @@ class AutomatoFinito:
     estado_inicial: Estado
     estados_finais: Set[Estado]
 
+    estado_atual: Estado = field(init=False)
+    cadeia: Optional[str] = field(init=False, default=None)
+
     def __post_init__(self) -> None:
+        self.estado_atual = self.estado_inicial
         self.__checa_eh_valido()
 
-    def valida_cadeia(self, cadeia: str, verbose: bool = False) -> bool:
-        # def consumir() -> str:
-        #     nonlocal cadeia
-        #     cadeia = cadeia[1:]
-        #     return cadeia[0]
-        
+    # def consumir(self) -> None:
+    #     self.__checa_cadeia_nao_definida()
+    #     cadeia: str = cast(str, self.cadeia)
+    #     prox
+
+    def valida_cadeia(self, verbose: bool = False) -> bool:
+        if self.cadeia is None:
+            raise Exception("Defina uma cadeia (vazia ou não) para validar")
 
         return False
-    
 
     def __checa_eh_valido(self) -> None:
         checa_conjunto_vazio(self.alfabeto, "Alfabeto")
@@ -46,3 +51,7 @@ class AutomatoFinito:
         checa_conjunto_contem(
             self.estados, "Estados", self.estado_inicial, "Estado inicial"
         )
+
+    def __checa_cadeia_nao_definida(self) -> None:
+        if self.cadeia is None:
+            raise Exception("Defina uma cadeia (vazia ou não) para validar")
