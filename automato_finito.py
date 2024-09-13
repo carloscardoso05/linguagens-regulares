@@ -4,7 +4,7 @@ from validadores import (
     checa_eh_subconjunto,
 )
 from dataclasses import dataclass
-from typing import Set, TypeAlias, List, Deque, Tuple
+from typing import Set, TypeAlias, List, Deque, Tuple, cast
 from enum import Enum
 from collections import deque
 
@@ -98,4 +98,10 @@ class AutomatoFinito:
         )
         checa_conjunto_contem(
             self.estados, "Estados", self.estado_inicial, "Estado inicial"
+        )
+        checa_eh_subconjunto(
+            self.alfabeto,
+            "Alfabeto",
+            set(map(lambda t: cast(Transicao, t).simbolo, self.funcao_de_transicao)),
+            "transições",
         )
